@@ -1,0 +1,16 @@
+.header {
+  height: 6.5rem;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header .wrapper {
+  width: 95%;
+}
+.header .wrapper .logo {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=styles.css.map */

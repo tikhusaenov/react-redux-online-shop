@@ -1,0 +1,38 @@
+.directory {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  .item {
+    width: 50%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    .item-link {
+      border: 1px solid white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 4rem;
+      width: 20rem;
+      color: white;
+      margin-top: 5rem;
+      cursor: pointer;
+      box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+      &:hover {
+        background: white;
+        color: black;
+
+      }
+    }
+
+
+    &:first-child {
+      background-position: top ;
+    }
+  }
+}
