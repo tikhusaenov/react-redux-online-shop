@@ -1,0 +1,11 @@
+.footer-container {
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
+/*# sourceMappingURL=styles.css.map */

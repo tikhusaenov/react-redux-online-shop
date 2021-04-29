@@ -7,10 +7,23 @@
 }
 .header .wrapper {
   width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .header .wrapper .logo {
   font-size: 24px;
   cursor: pointer;
+  color: black;
+  text-decoration: none;
+}
+.header .wrapper .actions {
+  width: 15rem;
+}
+.header .wrapper .actions .actions-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /*# sourceMappingURL=styles.css.map */
