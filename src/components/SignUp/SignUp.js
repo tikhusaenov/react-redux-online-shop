@@ -5,6 +5,7 @@ import {signInWithGoogle} from "../../firebase/utils";
 import FormInput from "../forms/FormInput/FormInput";
 
 import { auth, handleUserProfile} from "../../firebase/utils";
+import AuthForm from "../forms/AuthForm/AuthForm";
 
 const initialState = {
     displayName: '',
@@ -58,14 +59,11 @@ class SignUp extends Component {
         const { displayName, email, password, confirmPassword, errors } = this.state
 
         return (
-            <div className="signup">
-                <div className="wrapper">
-                    <div className="heading">
-                        <span>Register</span>
-                    </div>
+            <AuthForm heading="Register">
+                <div className="form-wrapper">
                     {errors.length > 0 && (
                         <ul>
-                            {errors.map((err,index) => {
+                            {errors.map((err, index) => {
                                 return (
                                     <li key={index}>
                                         {err}
@@ -74,46 +72,43 @@ class SignUp extends Component {
                             })}
                         </ul>
                     )}
-                    <div className="form-wrapper">
-                        <form onSubmit={this.handleFormSubmit}>
-                            <FormInput
-                                type="text"
-                                name="displayName"
-                                value={displayName}
-                                placeholder="Full name"
-                                onChange={this.handleChange}
-                            />
+                    <form onSubmit={this.handleFormSubmit}>
+                        <FormInput
+                            type="text"
+                            name="displayName"
+                            value={displayName}
+                            placeholder="Full name"
+                            onChange={this.handleChange}
+                        />
 
-                            <FormInput
-                                type="text"
-                                name="email"
-                                value={email}
-                                placeholder="Email"
-                                onChange={this.handleChange}
-                            />
+                        <FormInput
+                            type="text"
+                            name="email"
+                            value={email}
+                            placeholder="Email"
+                            onChange={this.handleChange}
+                        />
 
-                            <FormInput
-                                type="password"
-                                name="password"
-                                value={password}
-                                placeholder="Password"
-                                onChange={this.handleChange}
-                            />
+                        <FormInput
+                            type="password"
+                            name="password"
+                            value={password}
+                            placeholder="Password"
+                            onChange={this.handleChange}
+                        />
 
-                            <FormInput
-                                type="password"
-                                name="confirmPassword"
-                                value={confirmPassword}
-                                placeholder="Confirm password"
-                                onChange={this.handleChange}
-                            />
+                        <FormInput
+                            type="password"
+                            name="confirmPassword"
+                            value={confirmPassword}
+                            placeholder="Confirm password"
+                            onChange={this.handleChange}
+                        />
 
-                            <Button type="submit">Register</Button>
-
-                        </form>
-                    </div>
+                        <Button type="submit">Register</Button>
+                    </form>
                 </div>
-            </div>
+            </AuthForm>
         )
     }
 }

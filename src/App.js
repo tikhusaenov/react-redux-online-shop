@@ -10,6 +10,7 @@ import Homepage from "./pages/Homepage/Homepage";
 import Registration from "./pages/Registration/Registration";
 import './default.scss'
 import Login from "./pages/Login/Login";
+import Reset from "./pages/Reset/Reset";
 
 
 
@@ -77,6 +78,13 @@ class App extends Component {
                                 <Login />
                             </MainLayout>
                         )}
+                    />
+                    <Route path="/reset"
+                           render={() => currentUser ? <Redirect to="/" /> : (
+                               <MainLayout currentUser={currentUser}>
+                                   <Reset />
+                               </MainLayout>
+                           )}
                     />
                 </Switch>
             </div>
