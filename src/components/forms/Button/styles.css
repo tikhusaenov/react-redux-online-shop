@@ -1,0 +1,21 @@
+.btn {
+  display: flex;
+  font-family: Oswald, sans-serif;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  letter-spacing: 1px;
+  color: black;
+  width: 20rem;
+  height: 3rem;
+  background: white;
+  font-size: 20px;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid black;
+}
+.btn:hover {
+  background: black;
+  color: white;
+}
+
+/*# sourceMappingURL=styles.css.map */
