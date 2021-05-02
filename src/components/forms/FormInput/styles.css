@@ -1,0 +1,9 @@
+.formRow input {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.formRow:first-child {
+  margin-top: 1rem;
+}
+
+/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,25 @@
+.signin {
+  width: 100%;
+  max-width: 40rem;
+  margin: 4rem auto 6rem;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+.signin .wrapper {
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+  align-items: center;
+}
+.signin .wrapper .heading {
+  font-size: 2.2rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.signin .wrapper .social-signin {
+  margin: 3rem auto 1rem;
+}
+
+/*# sourceMappingURL=styles.css.map */

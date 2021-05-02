@@ -25,6 +25,15 @@
         display:flex;
         justify-content: space-between;
         align-items: center;
+        cursor: pointer;
+
+        .actions-link {
+            transition: all .4s ease-in-out;
+            &:hover {
+              border-bottom: 1px solid black;
+              padding-bottom: 0.5rem;
+            }
+        }
       }
     }
 

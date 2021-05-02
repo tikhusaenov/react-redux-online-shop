@@ -24,6 +24,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+}
+.header .wrapper .actions .actions-list .actions-link {
+  transition: all 0.4s ease-in-out;
+}
+.header .wrapper .actions .actions-list .actions-link:hover {
+  border-bottom: 1px solid black;
+  padding-bottom: 0.5rem;
 }
 
 /*# sourceMappingURL=styles.css.map */
