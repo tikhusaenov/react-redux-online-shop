@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import './styles.scss'
 
@@ -6,83 +6,68 @@ import AuthForm from "../forms/AuthForm/AuthForm";
 import FormInput from "../forms/FormInput/FormInput";
 import Button from "../forms/Button/Button";
 import {auth} from "../../firebase/utils";
+import {resetAuthForms, resetUserPassword} from "../../redux/user/userActions";
+import { useDispatch, useSelector } from "react-redux";
 
-const initialState = {
-    email: '',
-    errors: []
-}
+const mapState = ({ user }) => ({
+    resetPasswordSuccess: user.resetPasswordSuccess,
+    resetPasswordError: user.resetPasswordError
+})
 
-class EmailPassword extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            ...initialState
+
+const EmailPassword = (props) => {
+    const dispatch = useDispatch()
+    const { resetPasswordSuccess, resetPasswordError } = useSelector(mapState)
+    const [email, setEmail] = useState('')
+    const [errors, setErrors] = useState([])
+
+    useEffect(() => {
+        if (resetPasswordSuccess) {
+            console.log('Password reset')
+            dispatch(resetAuthForms())
+            props.history.push('/login')
         }
 
-        this.handleChange = this.handleChange.bind(this)
-    }
+    }, [resetPasswordSuccess])
 
-    handleChange = event => {
-        const { name, value } = event.target
-        this.setState({
-            [name]: value
-        })
-    }
+    useEffect(() => {
+        if (Array.isArray(resetPasswordError) && resetPasswordError.length !== 0) {
+            setErrors(resetPasswordError)
+        }
+    }, [resetPasswordError])
 
-    handleFormSubmit = async event => {
+    const handleFormSubmit = async event => {
         event.preventDefault()
-        try {
-            const  { email } = this.state
-            const config = {
-                url: 'http://localhost:3000/login'
-            }
-            await auth.sendPasswordResetEmail(email, config)
-                .then(() => {
-                    console.log('Password reset')
-                    this.props.history.push('/login')
-                })
-                .catch(() => {
-                    console.log('Something gone wrong')
-                    const err = ['This email doesn\'t exist']
-                    this.setState({
-                        errors: err
-                    })
-                })
-
-        } catch(err) {
-            console.log(err)
-        }
+        dispatch(resetUserPassword({ email }))
     }
 
-    render() {
-        const { email, errors } = this.state
 
-        return (
-            <AuthForm heading="Reset password">
-                <div className="form-wrapper">
-                    {errors.length > 0 && (
-                        <ul>
-                            {errors.map((err, index) => {
-                                return (
-                                    <li key={index}>{err}</li>
-                                )
-                            })}
-                        </ul>
-                    )}
-                    <form onSubmit={this.handleFormSubmit}>
-                        <FormInput
-                            type="email"
-                            name="email"
-                            value={email}
-                            placeholder="Email"
-                            onChange={this.handleChange}
-                        />
-                        <Button type="submit">Reset</Button>
-                    </form>
-                </div>
-            </AuthForm>
-        )
-    }
+    return (
+        <AuthForm heading="Reset password">
+            <div className="form-wrapper">
+                {errors.length > 0 && (
+                    <ul>
+                        {errors.map((err, index) => {
+                            return (
+                                <li key={index}>{err}</li>
+                            )
+                        })}
+                    </ul>
+                )}
+                <form onSubmit={handleFormSubmit}>
+                    <FormInput
+                        type="email"
+                        name="email"
+                        value={email}
+                        placeholder="Email"
+                        handleChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Button type="submit">Reset</Button>
+                </form>
+            </div>
+        </AuthForm>
+    )
+
 }
 
 export default withRouter(EmailPassword)

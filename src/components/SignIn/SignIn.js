@@ -1,87 +1,78 @@
-import React, { Component } from 'react'
-import {Link} from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { withRouter, Link } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import {resetAuthForms, signInUser, signInWithGoogle} from "../../redux/user/userActions";
 import AuthForm from "../forms/AuthForm/AuthForm";
 import Button from "../forms/Button/Button";
 import FormInput from "../forms/FormInput/FormInput";
-import { signInWithGoogle } from '../../firebase/utils'
-import { auth, handleUserProfile } from '../../firebase/utils'
 
 import "./styles.scss"
 
+const mapState = ({ user }) => ({
+    signInSuccess: user.signInSuccess
+})
 
+const SignIn = (props) => {
+    const dispatch  = useDispatch()
+    const { signInSuccess } = useSelector(mapState)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-const initialState = {
-    email: '',
-    password: ''
-}
-
-class SignIn extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            ...initialState
+    useEffect(() => {
+        if(signInSuccess === true) {
+           resetForm();
+           dispatch(resetAuthForms());
+           props.history.push('/')
         }
+    }, [signInSuccess])
 
-        this.handleChange = this.handleChange.bind(this)
+    const resetForm = () => {
+        setEmail('');
+        setPassword('');
     }
 
-    handleFormSubmit = async event => {
+    const handleFormSubmit = event => {
         event.preventDefault()
-        const { email, password } = this.state
-        try {
-           await auth.signInWithEmailAndPassword(email, password)
-           this.setState({
-               ...initialState
-           })
-        } catch(err) {
-            console.log(err)
-        }
-
+        dispatch(signInUser({ email, password }))
     }
 
-    handleChange = event => {
-        const { name, value } = event.target
-        this.setState({
-            [name]: value
-        })
+    const handleGoogleSubmit = event => {
+        event.preventDefault()
+        dispatch(signInWithGoogle())
     }
 
-    render() {
-        const { email, password } = this.state
-        return (
-            <AuthForm heading="Login">
-                <div className="form-wrapper">
-                    <form onSubmit={this.handleFormSubmit}>
-                        <FormInput
-                            type="text"
-                            name="email"
-                            value={email}
-                            placeholder="Email"
-                            onChange={this.handleChange}
-                        />
-                        <FormInput
-                            type="password"
-                            name="password"
-                            value={password}
-                            placeholder="Password"
-                            onChange={this.handleChange}
-                        />
-                        <Button type="submit">Sign In</Button>
+    return (
+        <AuthForm heading="Login">
+            <div className="form-wrapper">
+                <form onSubmit={handleFormSubmit}>
+                    <FormInput
+                        type="text"
+                        name="email"
+                        value={email}
+                        placeholder="Email"
+                        handleChange={(e) => setEmail(e.target.value)}
+                    />
+                    <FormInput
+                        type="password"
+                        name="password"
+                        value={password}
+                        placeholder="Password"
+                        handleChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Button type="submit">Sign In</Button>
 
-                        <Button onClick={signInWithGoogle}>
-                            Sign in with Google
-                        </Button>
+                    <Button onClick={handleGoogleSubmit}>
+                        Sign in with Google
+                    </Button>
 
-                        <Link to="/reset">
-                            Forgot password?
-                        </Link>
-                    </form>
-                </div>
-            </AuthForm>
-        )
-    }
+                    <Link to="/reset">
+                        Forgot password?
+                    </Link>
+                </form>
+            </div>
+        </AuthForm>
+    )
 
 }
 
-export default SignIn
+export default withRouter(SignIn)
