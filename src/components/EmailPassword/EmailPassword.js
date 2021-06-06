@@ -1,44 +1,44 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
-import './styles.scss'
-
+import { useHistory } from 'react-router-dom'
 import AuthForm from "../forms/AuthForm/AuthForm";
 import FormInput from "../forms/FormInput/FormInput";
 import Button from "../forms/Button/Button";
-import {auth} from "../../firebase/utils";
-import {resetAuthForms, resetUserPassword} from "../../redux/user/userActions";
+import { resetPasswordStart, resetUserState } from "../../redux/user/userActions";
 import { useDispatch, useSelector } from "react-redux";
+
+import './styles.scss'
+
 
 const mapState = ({ user }) => ({
     resetPasswordSuccess: user.resetPasswordSuccess,
-    resetPasswordError: user.resetPasswordError
+    userErr: user.userErr,
 })
 
 
 const EmailPassword = (props) => {
     const dispatch = useDispatch()
-    const { resetPasswordSuccess, resetPasswordError } = useSelector(mapState)
+    const history = useHistory()
+    const { resetPasswordSuccess, userErr } = useSelector(mapState)
     const [email, setEmail] = useState('')
     const [errors, setErrors] = useState([])
 
     useEffect(() => {
         if (resetPasswordSuccess) {
-            console.log('Password reset')
-            dispatch(resetAuthForms())
-            props.history.push('/login')
+            dispatch(resetUserState())
+            history.push('/login')
         }
 
     }, [resetPasswordSuccess])
 
     useEffect(() => {
-        if (Array.isArray(resetPasswordError) && resetPasswordError.length !== 0) {
-            setErrors(resetPasswordError)
+        if (Array.isArray(userErr) && userErr.length !== 0) {
+            setErrors(userErr)
         }
-    }, [resetPasswordError])
+    }, [userErr])
 
     const handleFormSubmit = async event => {
         event.preventDefault()
-        dispatch(resetUserPassword({ email }))
+        dispatch(resetPasswordStart({ email }))
     }
 
 
@@ -70,4 +70,4 @@ const EmailPassword = (props) => {
 
 }
 
-export default withRouter(EmailPassword)
+export default EmailPassword

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 
 import './styles.scss'
@@ -7,17 +7,18 @@ import Button from "../forms/Button/Button";
 import FormInput from "../forms/FormInput/FormInput";
 
 import AuthForm from "../forms/AuthForm/AuthForm";
-import {resetAuthForms, signUpUser} from "../../redux/user/userActions";
+import { signUpUserStart } from "../../redux/user/userActions";
 
 
 const mapState = ({ user }) => ({
-    signUpSuccess: user.signUpSuccess,
-    signUpError: user.signUpError,
+    currentUser: user.currentUser,
+    userErr: user.userErr
 })
 
 const SignUp = (props) => {
     const dispatch = useDispatch()
-    const { signUpSuccess, signUpError } = useSelector(mapState)
+    const history = useHistory()
+    const { currentUser, userErr } = useSelector(mapState)
     const [displayName, setDisplayName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -33,22 +34,21 @@ const SignUp = (props) => {
     }
 
     useEffect(() => {
-        if (signUpSuccess === true) {
+        if (currentUser) {
             resetForm()
-            dispatch(resetAuthForms())
-            props.history.push('/')
+            history.push('/')
         }
-    }, [signUpSuccess])
+    }, [currentUser])
 
     useEffect(() => {
-        if (Array.isArray(signUpError) && signUpError.length !== 0) {
-            setErrors(signUpError)
+        if (Array.isArray(userErr) && userErr.length !== 0) {
+            setErrors(userErr)
         }
-    }, [signUpError])
+    }, [userErr])
 
     const handleFormSubmit = event => {
         event.preventDefault()
-        dispatch(signUpUser({ displayName, email, password, confirmPassword }))
+        dispatch(signUpUserStart({ displayName, email, password, confirmPassword }))
     }
 
     return (
@@ -107,4 +107,4 @@ const SignUp = (props) => {
 }
 
 
-export default withRouter(SignUp)
+export default SignUp
